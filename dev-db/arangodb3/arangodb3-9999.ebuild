@@ -2,20 +2,21 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=5
+EAPI=6
 CMAKE_BUILD_TYPE=Release
 PYTHON_COMPAT=( python2_7 )
 
-inherit eutils user vcs-snapshot systemd python-any-r1 cmake-utils flag-o-matic
+inherit eutils user vcs-snapshot systemd python-any-r1 cmake-utils flag-o-matic git-r3
 
 DESCRIPTION="The multi-purpose multi-model NoSQL DB"
 HOMEPAGE="http://www.arangodb.org/"
 
-GITHUB_USER="arangodb"
-GITHUB_TAG="v${PV}"
+EGIT_REPO_URI="https://github.com/arangodb/arangodb"
+#GITHUB_USER="arangodb"
+#GITHUB_TAG="v${PV}"
 PN=arangodb
 
-SRC_URI="https://github.com/${GITHUB_USER}/${PN}/archive/${GITHUB_TAG}.tar.gz -> ${P}.tar.gz"
+#SRC_URI="https://github.com/${GITHUB_USER}/${PN}/archive/${GITHUB_TAG}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"

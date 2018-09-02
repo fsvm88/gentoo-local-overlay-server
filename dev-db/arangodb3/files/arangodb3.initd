@@ -1,23 +1,25 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
+
+app_path=${ARANGODB_APP_PATH:-/var/lib/arangodb3-apps}
+db_folder=${ARANGODB_DB_FOLDER:-/var/lib/arangodb3}
+
+command="/usr/bin/env GLIBCXX_FORCE_NEW=1 /usr/sbin/arangod"
+command_args="--configuration /etc/arangodb3/arangod.conf --database.directory=\"${db_folder}\" --javascript.app-path=\"${app_path}\""
+command_background=1
+
+pidfile=${ARANGODB:-/var/run/arangod3.pid}
+user=${ARANGODB_USER:-arangodb3}
+group=${ARANGODB_GROUP:-arangodb3}
 
 depend() {
   need net
 }
 
-start() {
-  ebegin "Starting ArangoDB v3"
-  start-stop-daemon \
-    --start \
-    --exec /usr/sbin/arangod \
-    --pidfile /var/run/arangod3.pid \
-    --make-pidfile \
-    --user arangodb3 \
-    --background
-  eend $? "Failed to start ArangoDB v3"
+start_pre() {
+	mkdir -p "${db_folder}" "${app_path}"
+	chown -R "${user}":"${group}" "${db_folder}" "${app_path}"
 }
 
-stop() {
-  ebegin "Stopping ArangoDB v3"
-  start-stop-daemon --stop --pidfile /var/run/arangod3.pid
-  eend $? "Failed to stop ArangoDB v3"
+stop_post() {
+	rm -f ${pidfile}
 }
